@@ -30,14 +30,14 @@ function addTask(text) {
   taskRemove.className = "task__remove";
   taskRemove.innerHTML = "&times;";
   task.appendChild(taskRemove);
-
+// обработчик удаления для крестика
   taskRemove.addEventListener("click", (e) => {
     e.preventDefault();
     tasksList.removeChild(task);
     saveTasks();
   });
 }
-// сохраняем задачи в localstorrage
+// сохранение задачи в localstorrage
 function saveTasks() {
   let t = [];
   document.querySelectorAll(".task__title").forEach((taskTitle) => {
