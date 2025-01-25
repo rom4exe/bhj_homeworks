@@ -10,33 +10,57 @@ tasksForm.addEventListener("submit", (e) => {
   if (taskText) {
     addTask(taskText);
     taskInput.value = "";
+
     saveTasks();
   }
 });
 
 // добавление задач
 function addTask(text) {
-  const task = document.createElement("div");
-  task.className = "task";
-  tasksList.appendChild(task);
+  // const task = document.createElement("div");
+  // task.className = "task";
+  // tasksList.appendChild(task);
 
-  const taskTitle = document.createElement("div");
-  taskTitle.className = "task__title";
-  taskTitle.textContent = text;
-  task.appendChild(taskTitle);
+  // const taskTitle = document.createElement("div");
+  // taskTitle.className = "task__title";
+  // taskTitle.textContent = text;
+  // task.appendChild(taskTitle);
 
-  const taskRemove = document.createElement("a");
-  taskRemove.href = "#";
-  taskRemove.className = "task__remove";
-  taskRemove.innerHTML = "&times;";
-  task.appendChild(taskRemove);
-// обработчик удаления для крестика
-  taskRemove.addEventListener("click", (e) => {
-    e.preventDefault();
-    tasksList.removeChild(task);
-    saveTasks();
+  // const taskRemove = document.createElement("a");
+  // taskRemove.href = "#";
+  // taskRemove.className = "task__remove";
+  // taskRemove.innerHTML = "&times;";
+  // task.appendChild(taskRemove);
+  // // обработчик удаления для крестика
+  // taskRemove.addEventListener("click", (e) => {
+  //   e.preventDefault();
+  //   tasksList.removeChild(task);
+  //   saveTasks();
+  // });
+
+  tasksList.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="task">
+      <div class="task__title">
+        ${text}
+      </div>
+      <a href="#" class="task__remove">&times;</a>
+    </div>
+    `
+  );
+
+  tasksRemove = document.querySelectorAll(".task__remove");
+  tasksRemove.forEach((task) => {
+    task.addEventListener("click", () => {
+      task.parentElement.remove();
+      saveTasks();
+    });
   });
 }
+
+//
+
 // сохранение задачи в localstorrage
 function saveTasks() {
   let t = [];
@@ -47,8 +71,10 @@ function saveTasks() {
 }
 //читаем сохраненные задачи из localstorrage
 function loadTasks() {
-  tt = JSON.parse(localStorage.getItem("key"));
-  tt.forEach((task) => {
-    addTask(task);
-  });
+  noEmpty = JSON.parse(localStorage.getItem("key"));
+  if (noEmpty) {
+    noEmpty.forEach((task) => {
+      addTask(task);
+    });
+  }
 }
